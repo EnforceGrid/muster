@@ -9,3 +9,4 @@ src/schemas/generated.ts
 *.log
 coverage/
 .DS_Store
+*.swp
