@@ -1,0 +1,24 @@
+organisation:
+  name: Acme Corp
+  country: DE
+  industry: Financial Services
+  headcount_band: "1000-4999"
+  assessment_owner:
+    name: Alex Johnson
+    email: alex.johnson@acme-example.com
+    title: Chief Information Officer
+
+assessment:
+  coverage_threshold: 0.8
+  confidence_threshold: 70
+  follow_up_budget: 3
+
+stakeholders:
+  - name: Kim Weber
+    email: k.weber@acme-example.com
+    title: Head of Data Analytics
+    role_family: data
+  - name: Ingrid Hofmann
+    email: i.hofmann@acme-example.com
+    title: Engineering Lead
+    role_family: it_engineering

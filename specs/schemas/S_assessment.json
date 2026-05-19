@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_assessment",
+  "title": "Assessment",
+  "description": "A single end-to-end run from invitation through roadmap. Owns interview threads, AI-system records, classifications, gap findings, the roadmap, and the documentation package. Referenced by every workflow (W_assessment, W_interview, W_per_ai_system, W_roadmap, W_documentation).",
+  "type": "object",
+  "required": [
+    "id",
+    "organisation_id",
+    "status",
+    "coverage_threshold",
+    "confidence_threshold",
+    "follow_up_budget",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "organisation_id": { "type": "string", "format": "uuid", "description": "Reference to S_organisation.id." },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "invitations_sent",
+        "discovery",
+        "discovery_complete",
+        "classification",
+        "gap_analysis",
+        "roadmap_pending_approval",
+        "documentation_drafting",
+        "complete",
+        "paused"
+      ],
+      "description": "Outer assessment-state machine state; see W_assessment."
+    },
+    "coverage_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.8,
+      "description": "Proportion of stakeholders whose interview must complete before classification advances (R023, B004)."
+    },
+    "confidence_threshold": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 70,
+      "description": "Below-threshold classifications trigger C_low_confidence_review (B044)."
+    },
+    "follow_up_budget": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 3,
+      "description": "Maximum follow-up rounds per stakeholder for the same missing mandatory fields (B014)."
+    },
+    "follow_up_window_days": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 14,
+      "description": "Stakeholder-silent window before escalation (consultant-practice.md §8)."
+    },
+    "mandatory_field_set_override": {
+      "type": ["array", "null"],
+      "items": { "type": "string" },
+      "description": "If non-null, narrowed mandatory-field set; defaults to the 26-field canonical set (B016)."
+    },
+    "stakeholder_count_invited": { "type": "integer", "minimum": 0 },
+    "stakeholder_count_completed": { "type": "integer", "minimum": 0 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "launched_at": { "type": ["string", "null"], "format": "date-time" },
+    "completed_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

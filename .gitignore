@@ -1,0 +1,11 @@
+.gsd
+node_modules/
+dist/
+var/
+.env
+.env.*
+!.env.example
+src/schemas/generated.ts
+*.log
+coverage/
+.DS_Store

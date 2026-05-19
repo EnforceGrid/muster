@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_invitation",
+  "title": "Invitation",
+  "description": "A unique outbound to a stakeholder containing a correlation token. One per stakeholder per assessment. The correlation_token is the load-bearing identifier for B011 (per-invitation token correlation).",
+  "type": "object",
+  "required": ["id", "assessment_id", "stakeholder_id", "correlation_token", "sent_at", "reply_to_address"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "assessment_id": { "type": "string", "format": "uuid" },
+    "stakeholder_id": { "type": "string", "format": "uuid" },
+    "correlation_token": {
+      "type": "string",
+      "minLength": 16,
+      "description": "Cryptographically random per-invitation token; embedded in reply_to_address (R021, B011)."
+    },
+    "reply_to_address": {
+      "type": "string",
+      "format": "email",
+      "description": "Reply-To address embedding the correlation_token (e.g. reply+<token>@abra...)."
+    },
+    "subject_line": { "type": "string" },
+    "body_hash": {
+      "type": "string",
+      "description": "Stable hash of the rendered invitation body for audit (B085)."
+    },
+    "sent_at": { "type": "string", "format": "date-time" },
+    "delivery_status": {
+      "type": "string",
+      "enum": ["queued", "sent", "delivered", "bounced", "failed"],
+      "default": "queued"
+    },
+    "audit_event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to the S_audit_event recorded when the invitation was sent."
+    }
+  }
+}

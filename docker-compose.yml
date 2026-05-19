@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: muster-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: muster
+      POSTGRES_PASSWORD: muster
+      POSTGRES_DB: muster
+    ports:
+      - "5434:5432"
+    volumes:
+      - muster-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "muster", "-d", "muster"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  muster-pg-data:

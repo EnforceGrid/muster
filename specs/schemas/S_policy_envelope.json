@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_policy_envelope",
+  "title": "Policy Envelope",
+  "description": "Metadata attached to every LLM call so Steer can render a policy decision. The envelope shape is provider-agnostic.",
+  "type": "object",
+  "required": [
+    "envelope_id",
+    "envelope_version",
+    "assessment_id",
+    "agent_role",
+    "purpose",
+    "model_id",
+    "issued_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "envelope_id": { "type": "string", "format": "uuid" },
+    "envelope_version": { "type": "integer", "const": 1 },
+    "assessment_id": { "type": "string", "format": "uuid" },
+    "agent_role": {
+      "type": "string",
+      "pattern": "^A_[a-z][a-z0-9_]*$"
+    },
+    "purpose": {
+      "type": "string",
+      "enum": [
+        "interview_question_generation",
+        "follow_up_question_generation",
+        "attestation_extraction",
+        "entity_resolution",
+        "classification_reasoning",
+        "gap_evaluation",
+        "document_section_drafting",
+        "review_summary"
+      ]
+    },
+    "policy_decision_category": {
+      "type": "string",
+      "pattern": "^P_[a-z][a-z0-9_]*$",
+      "description": "Policy category that governs this call."
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Provider-neutral model identifier as configured for the assessment."
+    },
+    "stakeholder_context_id": { "type": ["string", "null"], "format": "uuid" },
+    "subject_context_id": { "type": ["string", "null"], "format": "uuid" },
+    "audit_event_id": { "type": "string", "format": "uuid" },
+    "tool_context": {
+      "type": ["string", "null"],
+      "pattern": "^T_[a-z][a-z0-9_]*$"
+    },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Deterministic key for retry-safe LLM calls."
+    }
+  }
+}

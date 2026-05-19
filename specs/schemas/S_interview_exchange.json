@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_interview_exchange",
+  "title": "Interview Exchange",
+  "description": "One outbound question or follow-up plus the inbound reply. Belongs to one S_interview_thread. The raw_body is preserved in full for provenance (B015).",
+  "type": "object",
+  "required": ["id", "thread_id", "direction", "kind", "occurred_at"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "thread_id": { "type": "string", "format": "uuid" },
+    "direction": {
+      "type": "string",
+      "enum": ["outbound", "inbound"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["initial_invitation", "follow_up", "stakeholder_reply", "stakeholder_attachment_only"]
+    },
+    "raw_body": {
+      "type": "string",
+      "description": "Full original message body (text). Preserved verbatim for provenance and audit (B015)."
+    },
+    "raw_body_hash": { "type": "string" },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["filename", "content_hash"],
+        "additionalProperties": false,
+        "properties": {
+          "filename": { "type": "string" },
+          "media_type": { "type": "string" },
+          "content_hash": { "type": "string" },
+          "size_bytes": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "audit_event_id": { "type": "string", "format": "uuid" },
+    "correlation_token_observed": {
+      "type": ["string", "null"],
+      "description": "The correlation token observed on the inbound message; null for outbound or quarantined inbound (B011, B012)."
+    }
+  }
+}

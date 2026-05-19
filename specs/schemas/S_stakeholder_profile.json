@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_stakeholder_profile",
+  "title": "Stakeholder Profile",
+  "description": "An organisation employee invited to provide information about AI systems. Identified by email; never creates an account. Referenced by S_invitation, S_interview_thread, and S_evidence_item.",
+  "type": "object",
+  "required": ["id", "assessment_id", "email", "role_family", "invitation_status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "assessment_id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string" },
+    "email": { "type": "string", "format": "email" },
+    "title": { "type": "string" },
+    "role_family": {
+      "type": "string",
+      "enum": [
+        "business_owner",
+        "it_engineering",
+        "data",
+        "compliance_legal",
+        "procurement",
+        "operations",
+        "security"
+      ],
+      "description": "Stakeholder taxonomy from consultant-practice.md §2.1."
+    },
+    "invitation_status": {
+      "type": "string",
+      "enum": ["pending", "sent", "in_progress", "completed", "escalated", "withdrawn"]
+    },
+    "completion_status": {
+      "type": "string",
+      "enum": ["not_started", "partial", "complete"],
+      "default": "not_started"
+    }
+  }
+}

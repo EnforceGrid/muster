@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_audit_event",
+  "title": "Audit Event",
+  "description": "One immutable record of an LLM call attempt, tool call, external send, classification, gap finding, document section emission, or checkpoint outcome. Load-bearing for R013, R025, B084, B085, B091, B140.",
+  "type": "object",
+  "required": [
+    "id",
+    "assessment_id",
+    "kind",
+    "occurred_at",
+    "agent_role",
+    "audit_version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "assessment_id": { "type": "string", "format": "uuid" },
+    "audit_version": { "type": "integer", "const": 1 },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "llm_call_attempt",
+        "tool_call",
+        "external_send",
+        "classification_produced",
+        "classification_finalised",
+        "gap_finding_produced",
+        "document_section_emitted",
+        "checkpoint_opened",
+        "checkpoint_decided",
+        "evidence_captured",
+        "field_override_recorded",
+        "policy_envelope_emitted"
+      ]
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "agent_role": {
+      "type": "string",
+      "pattern": "^(A_[a-z][a-z0-9_]*|actor:[a-z_]+|system)$"
+    },
+    "tool_name": {
+      "type": ["string", "null"],
+      "pattern": "^T_[a-z][a-z0-9_]*$"
+    },
+    "workflow": {
+      "type": ["string", "null"],
+      "pattern": "^W_[a-z][a-z0-9_]*$"
+    },
+    "checkpoint_name": {
+      "type": ["string", "null"],
+      "pattern": "^C_[a-z][a-z0-9_]*$"
+    },
+    "subject_ref": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "References to entities the event acts on (ai_system_id, classification_id, exchange_id, stakeholder_id, etc.)."
+    },
+    "llm_call": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "model_id": { "type": "string" },
+        "purpose": { "type": "string" },
+        "request_hash": { "type": "string" },
+        "response_hash": { "type": ["string", "null"] },
+        "steer_verdict": { "type": "string", "enum": ["allow", "transform", "deny"] },
+        "steer_rationale": { "type": ["string", "null"] },
+        "policy_envelope_id": { "type": "string", "format": "uuid" },
+        "transformed": { "type": "boolean", "default": false },
+        "executed": { "type": "boolean" }
+      }
+    },
+    "external_send": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "recipient_hash": { "type": "string" },
+        "invitation_id": { "type": ["string", "null"], "format": "uuid" },
+        "message_hash": { "type": "string" }
+      }
+    },
+    "checkpoint_outcome": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_instance_id": { "type": "string", "format": "uuid" },
+        "outcome": { "type": "string", "enum": ["approve", "override", "reject", "send_back"] },
+        "rationale": { "type": "string" }
+      }
+    },
+    "rationale": {
+      "type": ["string", "null"],
+      "description": "Free-text rationale for the event when applicable."
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_organisation",
+  "title": "Organisation",
+  "description": "The customer entity under assessment. One Assessment Owner; one or more assessments over time.",
+  "type": "object",
+  "required": ["id", "name", "assessment_owner", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid", "description": "Stable organisation identifier." },
+    "name": { "type": "string", "minLength": 1, "description": "Legal or trading name." },
+    "country": { "type": "string", "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2 country code." },
+    "industry": { "type": "string", "description": "Free-text industry label; not part of classification logic." },
+    "headcount_band": {
+      "type": "string",
+      "enum": ["<50", "50-200", "200-1000", "1000-5000", ">5000"],
+      "description": "Approximate band for scope discipline."
+    },
+    "assessment_owner": {
+      "type": "object",
+      "required": ["name", "email"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "email": { "type": "string", "format": "email" },
+        "title": { "type": "string" }
+      },
+      "description": "The accountable human; receives every approval-checkpoint prompt."
+    },
+    "steer_instance_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "If non-null, runtime evidence pull via O_steer_runtime_pull is enabled (R014)."
+    },
+    "mandate_subscription_id": {
+      "type": ["string", "null"],
+      "description": "If non-null, Mandate change-feed (R015) flags affect this organisation's classifications."
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

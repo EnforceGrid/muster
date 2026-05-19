@@ -1,0 +1,41 @@
+{
+  "name": "muster",
+  "version": "0.0.1",
+  "description": "Structured evidence collection over email — when you need a record of who said what.",
+  "type": "module",
+  "engines": { "node": ">=20.10" },
+  "bin": { "muster": "./src/cli/index.ts" },
+  "scripts": {
+    "muster": "tsx src/cli/index.ts",
+    "build:types": "tsx scripts/build-schema-types.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test \"src/**/*.test.ts\"",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "commander": "^12.1.0",
+    "imapflow": "^1.0.170",
+    "js-yaml": "^4.1.1",
+    "mailparser": "^3.7.1",
+    "nodemailer": "^6.9.16",
+    "openai": "^6.38.0",
+    "postgres": "^3.4.5",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/js-yaml": "^4.0.9",
+    "@types/mailparser": "^3.4.4",
+    "@types/nodemailer": "^6.4.17",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.59.4",
+    "@typescript-eslint/parser": "^8.59.4",
+    "eslint": "^10.4.0",
+    "json-schema-to-typescript": "^15.0.3",
+    "typescript": "^5.7.2"
+  }
+}

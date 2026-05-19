@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S_interview_thread",
+  "title": "Interview Thread",
+  "description": "The ordered series of interview exchanges for one stakeholder in one assessment. Belongs to one stakeholder; owns multiple S_interview_exchange rows. Owned by W_interview.",
+  "type": "object",
+  "required": ["id", "assessment_id", "stakeholder_id", "invitation_id", "state", "exchange_count"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "assessment_id": { "type": "string", "format": "uuid" },
+    "stakeholder_id": { "type": "string", "format": "uuid" },
+    "invitation_id": { "type": "string", "format": "uuid" },
+    "state": {
+      "type": "string",
+      "enum": [
+        "awaiting_first_reply",
+        "extracting",
+        "following_up",
+        "complete",
+        "escalated",
+        "withdrawn"
+      ]
+    },
+    "exchange_count": { "type": "integer", "minimum": 0 },
+    "follow_up_round": { "type": "integer", "minimum": 0, "default": 0 },
+    "last_inbound_at": { "type": ["string", "null"], "format": "date-time" },
+    "last_outbound_at": { "type": ["string", "null"], "format": "date-time" },
+    "completed_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}
