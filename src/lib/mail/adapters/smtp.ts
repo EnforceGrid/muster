@@ -3,22 +3,24 @@ import type { MailSender, SendOpts } from "../types.js";
 
 export class SmtpSender implements MailSender {
   private transporter: nodemailer.Transporter;
+  private p: string;
 
-  constructor() {
-    const port = parseInt(process.env["MUSTER_SMTP_PORT"] ?? "587");
+  constructor(envPrefix = "MUSTER") {
+    this.p = envPrefix;
+    const port = parseInt(process.env[`${envPrefix}_SMTP_PORT`] ?? "587");
     this.transporter = nodemailer.createTransport({
-      host: process.env["MUSTER_SMTP_HOST"]!,
+      host: process.env[`${envPrefix}_SMTP_HOST`]!,
       port,
-      secure: process.env["MUSTER_SMTP_SECURE"] === "true",
-      ...(process.env["MUSTER_SMTP_USER"]
-        ? { auth: { user: process.env["MUSTER_SMTP_USER"], pass: process.env["MUSTER_SMTP_PASS"] } }
+      secure: process.env[`${envPrefix}_SMTP_SECURE`] === "true",
+      ...(process.env[`${envPrefix}_SMTP_USER`]
+        ? { auth: { user: process.env[`${envPrefix}_SMTP_USER`], pass: process.env[`${envPrefix}_SMTP_PASS`] } }
         : {}),
     });
   }
 
   async send(opts: SendOpts): Promise<void> {
     await this.transporter.sendMail({
-      from: process.env["MUSTER_SMTP_FROM"] ?? opts.from,
+      from: process.env[`${this.p}_SMTP_FROM`] ?? opts.from,
       to: opts.to,
       replyTo: opts.replyTo,
       subject: opts.subject,

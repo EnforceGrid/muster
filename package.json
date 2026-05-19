@@ -9,6 +9,15 @@
   "bin": {
     "muster": "./src/cli/index.ts"
   },
+  "exports": {
+    "./lib/validate":       "./src/lib/validate.ts",
+    "./lib/log":            "./src/lib/log.ts",
+    "./lib/db":             "./src/lib/db.ts",
+    "./lib/audit":          "./src/lib/audit.ts",
+    "./lib/mail/outbound":  "./src/lib/mail/outbound.ts",
+    "./lib/mail/inbound":   "./src/lib/mail/inbound.ts",
+    "./lib/mail/types":     "./src/lib/mail/types.ts"
+  },
   "scripts": {
     "muster": "tsx src/cli/index.ts",
     "build:types": "tsx scripts/build-schema-types.ts",

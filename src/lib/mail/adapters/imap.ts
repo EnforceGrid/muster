@@ -4,20 +4,27 @@ import { randomUUID } from "node:crypto";
 import type { MailPoller, InboundMessage } from "../types.js";
 
 export class ImapPoller implements MailPoller {
+  private envPrefix: string;
+
+  constructor(envPrefix = "MUSTER") {
+    this.envPrefix = envPrefix;
+  }
+
   async *poll(): AsyncGenerator<InboundMessage> {
+    const p = this.envPrefix;
     const client = new ImapFlow({
-      host: process.env["MUSTER_IMAP_HOST"]!,
-      port: parseInt(process.env["MUSTER_IMAP_PORT"] ?? "993"),
-      secure: process.env["MUSTER_IMAP_SECURE"] !== "false",
+      host: process.env[`${p}_IMAP_HOST`]!,
+      port: parseInt(process.env[`${p}_IMAP_PORT`] ?? "993"),
+      secure: process.env[`${p}_IMAP_SECURE`] !== "false",
       auth: {
-        user: process.env["MUSTER_IMAP_USER"]!,
-        pass: process.env["MUSTER_IMAP_PASS"]!,
+        user: process.env[`${p}_IMAP_USER`]!,
+        pass: process.env[`${p}_IMAP_PASS`]!,
       },
       logger: false,
     });
 
     await client.connect();
-    const mailbox = process.env["MUSTER_IMAP_MAILBOX"] ?? "INBOX";
+    const mailbox = process.env[`${p}_IMAP_MAILBOX`] ?? "INBOX";
     const lock = await client.getMailboxLock(mailbox);
 
     try {
