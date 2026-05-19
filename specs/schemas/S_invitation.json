@@ -18,7 +18,7 @@
     "reply_to_address": {
       "type": "string",
       "format": "email",
-      "description": "Reply-To address embedding the correlation_token (e.g. reply+<token>@abra...)."
+      "description": "Reply-To address embedding the correlation_token (e.g. reply+<token>@yourdomain.com)."
     },
     "subject_line": { "type": "string" },
     "body_hash": {
