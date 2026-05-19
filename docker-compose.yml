@@ -17,5 +17,28 @@ services:
       timeout: 3s
       retries: 10
 
+  muster:
+    image: ghcr.io/enforcegrid/muster
+    build: .
+    container_name: muster-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://muster:muster@postgres:5432/muster
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      MUSTER_DOMAIN: ${MUSTER_DOMAIN:-muster.example.com}
+      MUSTER_APP_NAME: ${MUSTER_APP_NAME:-Muster}
+      # MUSTER_SMTP_HOST: smtp.example.com
+      # MUSTER_SMTP_PORT: "587"
+      # MUSTER_SMTP_USER: you@example.com
+      # MUSTER_SMTP_PASS: ""
+      # MUSTER_IMAP_HOST: imap.example.com
+      # MUSTER_IMAP_USER: replies@example.com
+      # MUSTER_IMAP_PASS: ""
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   muster-pg-data:

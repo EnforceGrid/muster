@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "description": "Structured evidence collection over email — when you need a record of who said what.",
   "type": "module",
-  "engines": { "node": ">=20.10" },
-  "bin": { "muster": "./src/cli/index.ts" },
+  "engines": {
+    "node": ">=20.10"
+  },
+  "bin": {
+    "muster": "./src/cli/index.ts"
+  },
   "scripts": {
     "muster": "tsx src/cli/index.ts",
     "build:types": "tsx scripts/build-schema-types.ts",
@@ -15,9 +19,11 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
+    "@hono/node-server": "^2.0.3",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "commander": "^12.1.0",
+    "hono": "^4.12.21",
     "imapflow": "^1.0.170",
     "js-yaml": "^4.1.1",
     "mailparser": "^3.7.1",
@@ -30,8 +36,8 @@
     "@eslint/js": "^10.0.1",
     "@types/js-yaml": "^4.0.9",
     "@types/mailparser": "^3.4.4",
-    "@types/nodemailer": "^6.4.17",
     "@types/node": "^22.10.2",
+    "@types/nodemailer": "^6.4.17",
     "@typescript-eslint/eslint-plugin": "^8.59.4",
     "@typescript-eslint/parser": "^8.59.4",
     "eslint": "^10.4.0",

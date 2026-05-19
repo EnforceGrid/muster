@@ -14,13 +14,39 @@ Use Muster whenever you need an attributable paper trail of responses from peopl
 - Approval workflows requiring written sign-off
 - Any process where "who said what, and when" is load-bearing
 
-## Prerequisites
+## Quick start
+
+```bash
+docker run -p 8080:8080 \
+  -e OPENAI_API_KEY=$OPENAI_API_KEY \
+  ghcr.io/enforcegrid/muster
+```
+
+Postgres is embedded in the image. Data is lost when the container stops — fine for evaluation, not for production.
+
+```bash
+curl http://localhost:8080/health
+# {"ok":true}
+```
+
+**For production use Docker Compose** (separate, persistent Postgres):
+
+```bash
+curl -O https://raw.githubusercontent.com/enforcegrid/muster/main/docker-compose.yml
+OPENAI_API_KEY=$OPENAI_API_KEY docker compose up
+```
+
+---
+
+## Local development
+
+### Prerequisites
 
 - Node >= 20.10
-- Docker (for the bundled Postgres)
-- An OpenAI API key (for LLM-drafted invitation emails)
+- Docker (for Postgres)
+- An OpenAI API key
 
-## Setup
+### Setup
 
 ```bash
 npm install
